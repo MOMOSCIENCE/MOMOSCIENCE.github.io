@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>六年级上册《微小世界》知识点记忆卡片</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #7e57c2, #5e35b1);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .lesson-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            flex: 1;
+        }
+        
+        .display-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .display-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .display-btn {
+            padding: 8px 15px;
+            background-color: #e8f4fd;
+            border: 2px solid #c5e1f7;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #2c3e50;
+        }
+        
+        .display-btn:hover {
+            background-color: #c5e1f7;
+        }
+        
+        .display-btn.active {
+            background-color: #7e57c2;
+            color: white;
+            border-color: #7e57c2;
+        }
+        
+        .lesson-btn {
+            padding: 8px 20px;
+            background-color: #e8f4fd;
+            border: 2px solid #c5e1f7;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #2c3e50;
+        }
+        
+        .lesson-btn:hover {
+            background-color: #c5e1f7;
+            transform: translateY(-2px);
+        }
+        
+        .lesson-btn.active {
+            background-color: #7e57c2;
+            color: white;
+            border-color: #7e57c2;
+        }
+        
+        .card-container {
+            display: grid;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        /* 默认3列布局 */
+        .card-container.columns-3 {
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        }
+        
+        /* 2列布局 */
+        .card-container.columns-2 {
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+        }
+        
+        /* 1列布局 - 适合教室投屏 */
+        .card-container.columns-1 {
+            grid-template-columns: 1fr;
+        }
+        
+        .card {
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        
+        /* 根据不同列数调整卡片高度 */
+        .columns-1 .card {
+            height: 380px;
+        }
+        
+        .columns-2 .card {
+            height: 340px;
+        }
+        
+        .columns-3 .card {
+            height: 300px;
+        }
+        
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+        
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        
+        .card-front {
+            background-color: white;
+            color: #333;
+            border-left: 8px solid #7e57c2;
+        }
+        
+        .card-back {
+            background-color: #5e35b1;
+            color: white;
+            transform: rotateY(180deg);
+            border-left: 8px solid #7e57c2;
+        }
+        
+        .card-lesson {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #e8f4fd;
+            color: #7e57c2;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        
+        .card-front .card-lesson {
+            background-color: #7e57c2;
+            color: white;
+        }
+        
+        .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        /* 根据不同列数调整字体大小 */
+        .columns-1 .card-question,
+        .columns-1 .card-answer {
+            font-size: 1.6rem;
+        }
+        
+        .columns-2 .card-question,
+        .columns-2 .card-answer {
+            font-size: 1.4rem;
+        }
+        
+        .columns-3 .card-question,
+        .columns-3 .card-answer {
+            font-size: 1.3rem;
+        }
+        
+        .card-question {
+            font-weight: 600;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            text-align: left;
+        }
+        
+        .card-hint {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+            margin-top: 10px;
+            text-align: left;
+        }
+        
+        .card-answer {
+            font-weight: 600;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            text-align: left;
+            color: #f9e076;
+        }
+        
+        .card-explanation {
+            font-size: 1.05rem;
+            opacity: 0.9;
+            margin-top: 10px;
+            text-align: left;
+            line-height: 1.5;
+        }
+        
+        .flip-icon {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .card-front .flip-icon {
+            color: #7e57c2;
+        }
+        
+        .card-back .flip-icon {
+            color: #f9e076;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #ddd;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #7e57c2;
+        }
+        
+        @media (max-width: 768px) {
+            .card-container.columns-3,
+            .card-container.columns-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .columns-1 .card,
+            .columns-2 .card,
+            .columns-3 .card {
+                height: 320px;
+            }
+            
+            .columns-1 .card-question,
+            .columns-1 .card-answer,
+            .columns-2 .card-question,
+            .columns-2 .card-answer,
+            .columns-3 .card-question,
+            .columns-3 .card-answer {
+                font-size: 1.3rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .lesson-selector {
+                width: 100%;
+            }
+            
+            .display-controls {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .lesson-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .lesson-btn {
+                width: 90%;
+            }
+            
+            .display-btn {
+                padding: 6px 10px;
+                font-size: 0.9rem;
+            }
+            
+            .columns-1 .card,
+            .columns-2 .card,
+            .columns-3 .card {
+                height: 300px;
+            }
+            
+            .columns-1 .card-question,
+            .columns-1 .card-answer,
+            .columns-2 .card-question,
+            .columns-2 .card-answer,
+            .columns-3 .card-question,
+            .columns-3 .card-answer {
+                font-size: 1.2rem;
+            }
+        }
+        
+        /* 自定义滚动条 */
+        .card-front::-webkit-scrollbar, .card-back::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .card-front::-webkit-scrollbar-track, .card-back::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+            border-radius: 10px;
+        }
+        
+        .card-front::-webkit-scrollbar-thumb {
+            background: #7e57c2;
+            border-radius: 10px;
+        }
+        
+        .card-back::-webkit-scrollbar-thumb {
+            background: #f9e076;
+            border-radius: 10px;
+        }
+        
+        /* 强调文本样式 */
+        .emphasize {
+            color: #7e57c2;
+            font-weight: bold;
+        }
+        
+        .card-back .emphasize {
+            color: #f9e076;
+        }
+        
+        /* 表格样式 */
+        .table-container {
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .card-back .comparison-table th {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-back .comparison-table td {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>六年级上册《微小世界》知识点记忆卡片</h1>
+            <p class="subtitle">教科版六年级上册第一单元 • 点击卡片查看答案</p>
+        </header>
+        
+        <div class="controls">
+            <div class="lesson-selector">
+                <button class="lesson-btn active" data-lesson="all">全部课时</button>
+                <button class="lesson-btn" data-lesson="1">第1课：放大镜</button>
+                <button class="lesson-btn" data-lesson="2">第2课：怎样放得更大</button>
+                <button class="lesson-btn" data-lesson="3">第3课：观察身边微小的物体</button>
+                <button class="lesson-btn" data-lesson="4">第4课：观察洋葱表皮细胞</button>
+                <button class="lesson-btn" data-lesson="5">第5课：观察更多的生物细胞</button>
+                <button class="lesson-btn" data-lesson="6">第6课：观察水中微小的微生物</button>
+                <button class="lesson-btn" data-lesson="7">第7课：微生物与健康</button>
+            </div>
+            
+            <div class="display-controls">
+                <span class="display-label">每行显示：</span>
+                <button class="display-btn active" data-columns="1">1个卡片</button>
+                <button class="display-btn" data-columns="2">2个卡片</button>
+                <button class="display-btn" data-columns="3">3个卡片</button>
+            </div>
+        </div>
+        
+        <div class="card-container columns-1" id="cardContainer">
+            <!-- 卡片将通过JavaScript动态生成 -->
+        </div>
+        
+        <footer>
+            <div class="stats">
+                <span>总卡片数: <span id="totalCards">0</span></span>
+                <span>当前显示: <span id="visibleCards">0</span></span>
+            </div>
+            <p>点击卡片查看答案 • 使用筛选按钮查看不同课时知识点</p>
+            <p>© 教科版科学六年级上册第一单元《微小世界》知识点记忆卡片</p>
+        </footer>
+    </div>
+
+    <script>
+        // 六年级上册第一单元《微小世界》知识点数据
+        const knowledgeCards = [
+            // 第1课：放大镜
+            {
+                id: 1,
+                lesson: "1",
+                question: "放大镜的镜片有什么特点？它属于什么类型的透镜？",
+                answer: "放大镜的镜片是一种<span class='emphasize'>凸透镜</span>，特点是<span class='emphasize'>中间厚、边缘薄、透明</span>。",
+                explanation: "与普通玻璃片（中央、边缘一样厚）和近视眼镜片（中央薄、边缘厚）不同，只有凸透镜才能放大物体的图像。"
+            },
+            {
+                id: 2,
+                lesson: "1",
+                question: "放大镜能放大物体本身吗？它的作用是什么？",
+                answer: "放大镜<span class='emphasize'>不能放大物体本身</span>，只能放大物体的<span class='emphasize'>图像</span>。",
+                explanation: "放大镜通过改变光线传播路径，使我们看到物体放大的虚像，但物体实际大小并没有改变。"
+            },
+            {
+                id: 3,
+                lesson: "1",
+                question: "放大倍数越大，我们能看到什么？",
+                answer: "放大倍数越大，越能显现人的肉眼看不清的细微之处，获得<span class='emphasize'>更多的信息</span>。",
+                explanation: "放大镜放大了我们观察的细节，使我们能够发现肉眼难以察觉的特征。"
+            },
+            {
+                id: 4,
+                lesson: "1",
+                question: "使用放大镜有哪些正确方法？",
+                answer: "①观察对象不动，人眼与观察对象之间距离不变，放大镜在两者之间来回移动；②把放大镜放在眼前，移动物体直至图像大而清楚。",
+                explanation: "这两种方法都能帮助我们找到合适的焦距，获得清晰的放大图像。"
+            },
+            {
+                id: 5,
+                lesson: "1",
+                question: "放大镜的放大倍数与什么有关？与什么无关？",
+                answer: "放大倍数与它的<span class='emphasize'>凸度有关</span>，与<span class='emphasize'>镜片大小无关</span>。",
+                explanation: "凸度越大的放大镜，放大倍数就越大，但看到的视野越小；反之，凸度越小，放大倍数越小，视野越大。"
+            },
+            {
+                id: 6,
+                lesson: "1",
+                question: "除了专门的放大镜，还有哪些物体有放大功能？",
+                answer: "广口瓶、玻璃杯、烧瓶、烧杯、塑料袋（盒）装水，冰块、水滴、透明玻璃球等都有放大功能。",
+                explanation: "这些物体都具有中间厚、边缘薄的特点，所以能起到放大作用，可以作为简易放大镜使用。"
+            },
+            {
+                id: 7,
+                lesson: "1",
+                question: "比较放大镜、玻璃片和近视眼镜片的区别？",
+                answer: "<div class='table-container'><table class='comparison-table'><tr><th>类型</th><th>镜片特点</th><th>能否放大图像</th></tr><tr><td>放大镜</td><td>中央厚、边缘薄</td><td>能</td></tr><tr><td>玻璃片</td><td>中央、边缘一样厚</td><td>不能</td></tr><tr><td>近视眼镜片</td><td>中央薄、边缘厚</td><td>不能</td></tr></table></div>",
+                explanation: "只有中间厚、边缘薄的凸透镜（如放大镜）才能放大物体的图像。"
+            },
+            {
+                id: 8,
+                lesson: "1",
+                question: "放大镜的凸度与放大倍数、视野大小有什么关系？",
+                answer: "<span class='emphasize'>凸度越大，放大倍数越大，视野越小</span>；凸度越小，放大倍数越小，视野越大。",
+                explanation: "这是一个重要的权衡关系：高放大倍数意味着看到更多细节但视野范围小；低放大倍数能看到更大范围但细节较少。"
+            },
+            
+            // 第2课：怎样放得更大
+            {
+                id: 9,
+                lesson: "2",
+                question: "早期的显微镜是如何发明的？",
+                answer: "17世纪，人们发现把<span class='emphasize'>两个凸透镜组合</span>起来明显提高了放大倍数，这就是早期的显微镜。",
+                explanation: "组合两个凸透镜的发明，标志着显微镜技术的诞生，开启了微观世界的探索。"
+            },
+            {
+                id: 10,
+                lesson: "2",
+                question: "如何制作简易显微镜？",
+                answer: "①用一个放大镜观察物体，当图像清晰时保持位置不动；②在第一个放大镜下增加第二个放大镜，并保持平行，上下移动直至图像最大最清晰；③测量两个凸透镜间的距离；④用纸筒固定两个凸透镜。",
+                explanation: "自制的简易显微镜中，两个凸透镜分别相当于显微镜的目镜和物镜。"
+            },
+            {
+                id: 11,
+                lesson: "2",
+                question: "显微镜的发展经历了哪些阶段？",
+                answer: "经历了<span class='emphasize'>放大镜→早期显微镜→光学显微镜→电子显微镜→扫描隧道显微镜</span>的发展过程。",
+                explanation: "随着技术进步，显微镜的放大倍数和分辨率不断提高，使我们能看到越来越小的微观世界。"
+            },
+            {
+                id: 12,
+                lesson: "2",
+                question: "光学显微镜和电子显微镜的放大倍数各是多少？",
+                answer: "光学显微镜的放大倍数约<span class='emphasize'>一两千倍</span>；电子显微镜可以把物体的图像放大约<span class='emphasize'>200万倍</span>。",
+                explanation: "电子显微镜利用电子束代替光线，分辨率更高，能看到更小的结构如病毒、原子等。"
+            },
+            {
+                id: 13,
+                lesson: "2",
+                question: "显微镜的放大倍数如何计算？",
+                answer: "显微镜的放大倍数 = <span class='emphasize'>目镜的放大倍数 × 物镜的放大倍数</span>。",
+                explanation: "例如，目镜10倍，物镜40倍，则总放大倍数为10×40=400倍。"
+            },
+            {
+                id: 14,
+                lesson: "2",
+                question: "显微镜的发明有什么重要意义？",
+                answer: "显微镜的发明扩展了我们的视野，带我们走进微观世界，看到了<span class='emphasize'>微生物和细胞</span>。",
+                explanation: "这是科学史上的重大突破，推动了生物学、医学等学科的快速发展。"
+            },
+            {
+                id: 15,
+                lesson: "2",
+                question: "谁制成了世界上最早的金属结构显微镜？放大倍数是多少？",
+                answer: "<span class='emphasize'>荷兰生物学家列文虎克</span>制成了世界上最早的可以放大近<span class='emphasize'>300倍</span>的金属结构显微镜。",
+                explanation: "列文虎克用自制的显微镜观察了毛细血管的血液流动、水中的微生物等，做出了许多重要发现。"
+            },
+            {
+                id: 16,
+                lesson: "2",
+                question: "显微镜主要由哪些部分组成？各有什么作用？",
+                answer: "①目镜：放大图像；②物镜：放大图像；③调节旋钮：调节物体与物镜之间的距离；④反光镜：增强光线；⑤载物台：放置标本；⑥压片夹：固定标本。",
+                explanation: "了解显微镜各部分的功能有助于正确使用显微镜进行观察。"
+            },
+            
+            // 第3课：观察身边微小的物体
+            {
+                id: 17,
+                lesson: "3",
+                question: "正确使用显微镜的方法和步骤是什么？",
+                answer: "①安放：左手托镜座，右手握镜臂，向光摆放；②对光：调节反光镜使视野明亮；③上片：标本放载物台，对准通光孔，用压片夹固定；④调焦：先下后上调节；⑤观察：左眼看目镜，右眼记录。",
+                explanation: "严格按照步骤操作，既能保护显微镜，又能获得清晰的观察效果。"
+            },
+            {
+                id: 18,
+                lesson: "3",
+                question: "显微镜调焦时要注意什么？",
+                answer: "调焦要<span class='emphasize'>先下后上</span>：先转动调节旋钮使物镜接近玻片（眼睛看物镜避免压碎玻片），再左眼看目镜，反向转动调节旋钮至图像清晰。",
+                explanation: "先下后上的调焦方法可以避免物镜压碎玻片标本，是最安全的操作方法。"
+            },
+            {
+                id: 19,
+                lesson: "3",
+                question: "显微镜的成像有什么特点？移动载玻片时物像如何移动？",
+                answer: "显微镜成像<span class='emphasize'>上下、左右倒立</span>（如\"b\"变成\"q\"）。移动载玻片的方向：<span class='emphasize'>物像往哪偏，玻片就往哪移</span>（例：物像偏左，玻片向左移）。",
+                explanation: "这是显微镜光学原理决定的，掌握这个规律有助于在视野中找到并跟踪观察目标。"
+            },
+            {
+                id: 20,
+                lesson: "3",
+                question: "昆虫的身体一般由哪几部分组成？",
+                answer: "昆虫身体分为<span class='emphasize'>头、胸、腹</span>三部分，有一对触角，三对足，一般有两对翅。",
+                explanation: "这是昆虫的基本特征，也是区分昆虫与其他动物的主要依据。"
+            },
+            {
+                id: 21,
+                lesson: "3",
+                question: "人们根据苍蝇的哪些特征进行了发明创造？",
+                answer: "①根据苍蝇的触角（昆虫的鼻子）→研制出\"蝇式气味分析仪\"；②根据蝇的复眼→研制出\"蝇眼照相机\"、\"蝇眼雷达\"、\"蝇眼探测系统\"；③根据蝴蝶的彩色翅膀（小鳞片）→研制百叶窗样式，保持人造卫星内部温度恒定。",
+                explanation: "仿生学是重要的科学研究方法，从生物获得灵感解决人类技术问题。"
+            },
+            {
+                id: 22,
+                lesson: "3",
+                question: "不同昆虫的触角有什么不同？",
+                answer: "<div class='table-container'><table class='comparison-table'><tr><th>昆虫</th><th>触角类型</th></tr><tr><td>蝴蝶</td><td>棒状</td></tr><tr><td>蝗虫</td><td>丝状</td></tr><tr><td>蚕蛾</td><td>羽状</td></tr><tr><td>天牛</td><td>鞭状</td></tr></table></div>",
+                explanation: "不同形状的触角适应不同的功能需求，如感知气味、温度、湿度等。"
+            },
+            {
+                id: 23,
+                lesson: "3",
+                question: "手持式简易显微镜有什么特点？",
+                answer: "<span class='emphasize'>体积小，易携带</span>，可以看不透明的物体。",
+                explanation: "与普通光学显微镜相比，手持式简易显微镜更适合现场观察和移动使用。"
+            },
+            {
+                id: 24,
+                lesson: "3",
+                question: "观察工具的放大倍数与视野大小有什么关系？",
+                answer: "观察工具的放大倍数越高，物体的图像越<span class='emphasize'>大</span>，视野越<span class='emphasize'>小</span>。",
+                explanation: "这是显微镜使用中的重要规律，高倍镜下需要更精确地移动标本才能在视野中找到目标。"
+            },
+            
+            // 第4课：观察洋葱表皮细胞
+            {
+                id: 25,
+                lesson: "4",
+                question: "为什么在显微镜下观察物体需要制作玻片标本？",
+                answer: "物体必须制成玻片标本，才能在显微镜下观察到它的精细结构。显微镜所观察的标本必须<span class='emphasize'>薄而透明</span>。",
+                explanation: "光线需要透过标本才能被显微镜观察，太厚或不透明的物体会阻挡光线。"
+            },
+            {
+                id: 26,
+                lesson: "4",
+                question: "制作洋葱表皮玻片标本需要哪些材料和步骤？",
+                answer: "材料：载玻片、滴管、清水、洋葱、小刀、镊子、盖玻片、吸水纸、碘酒。<br>步骤：<span class='emphasize'>滴→取→展→盖→染→吸</span>。",
+                explanation: "滴：滴清水；取：撕取内表皮；展：展平；盖：盖盖玻片；染：染碘酒；吸：吸多余水分。"
+            },
+            {
+                id: 27,
+                lesson: "4",
+                question: "盖盖玻片的正确方法是什么？为什么要这样做？",
+                answer: "用镊子夹起盖玻片，让一边先接触载玻片上的水滴，再轻轻放下。这样做的目的是<span class='emphasize'>避免产生气泡</span>。",
+                explanation: "气泡会影响观察效果，甚至被误认为是细胞结构，因此要尽量减少气泡。"
+            },
+            {
+                id: 28,
+                lesson: "4",
+                question: "为什么要用碘酒染色？",
+                answer: "用碘酒染色可以使细胞结构更清晰，便于观察<span class='emphasize'>细胞核</span>等结构。",
+                explanation: "碘酒与细胞中的淀粉发生反应，使细胞核等结构颜色加深，更容易观察。"
+            },
+            {
+                id: 29,
+                lesson: "4",
+                question: "洋葱表皮细胞的结构是怎样的？",
+                answer: "洋葱表皮细胞的形状大体为<span class='emphasize'>长方形</span>，有<span class='emphasize'>细胞壁、细胞膜、细胞质、细胞核、液泡</span>等结构。",
+                explanation: "洋葱表皮细胞像一个个小房间紧密地排列在一起，每个\"小房间\"就是一个细胞。"
+            },
+            {
+                id: 30,
+                lesson: "4",
+                question: "谁第一个发现并命名了细胞？",
+                answer: "<span class='emphasize'>英国科学家罗伯特·胡克</span>用自制的复合显微镜观察软木薄片，发现它们像一间间长方形的小房间，就把它们命名为细胞。",
+                explanation: "1665年，罗伯特·胡克的这一发现标志着细胞学研究的开始。"
+            },
+            {
+                id: 31,
+                lesson: "4",
+                question: "细胞在生物体中的作用是什么？",
+                answer: "①除病毒外，绝大多数生物都是由细胞组成的；②细胞是生物体<span class='emphasize'>结构和功能</span>的最基本单位；③生物的呼吸、消化、排泄、生长、发育、繁殖、遗传等生命活动都是通过细胞进行的；④新细胞是由已存在的细胞分裂而来的。",
+                explanation: "细胞是生命的基本单位，所有生命活动都离不开细胞。"
+            },
+            {
+                id: 32,
+                lesson: "4",
+                question: "使用显微镜观察时，如果视野中出现小黑点且移动载玻片、更换目镜后小黑点仍在，小黑点可能在哪里？",
+                answer: "小黑点可能在<span class='emphasize'>物镜</span>上。",
+                explanation: "如果移动载玻片小黑点不移动，说明不在载玻片上；更换目镜后小黑点仍在，说明不在目镜上；因此最可能在物镜上。"
+            },
+            {
+                id: 33,
+                lesson: "4",
+                question: "从目镜往下看，黑漆漆的一片，可能是什么原因？如何解决？",
+                answer: "可能是<span class='emphasize'>对光没有对好</span>，应该调节反光镜对光。",
+                explanation: "显微镜使用时，首先要对光，确保有足够的光线通过标本进入目镜。"
+            },
+            {
+                id: 34,
+                lesson: "4",
+                question: "视野中洋葱表皮细胞很模糊，可能是什么原因？如何解决？",
+                answer: "可能是<span class='emphasize'>调焦没有调好</span>，应该调节准焦螺旋（调节旋钮）。",
+                explanation: "调焦不准确会导致图像模糊，需要仔细调节直到图像清晰。"
+            },
+            
+            // 第5课：观察更多的生物细胞
+            {
+                id: 35,
+                lesson: "5",
+                question: "植物叶肉细胞有什么特点？",
+                answer: "叶肉细胞中含有<span class='emphasize'>叶绿体</span>，叶绿体中含有叶绿素等物质，叶绿素是植物进行<span class='emphasize'>光合作用</span>的主要物质。",
+                explanation: "叶绿体是植物细胞特有的细胞器，是光合作用的场所。"
+            },
+            {
+                id: 36,
+                lesson: "5",
+                question: "植物根尖细胞由哪几部分组成？",
+                answer: "根尖细胞由<span class='emphasize'>根冠、分生区、伸长区、成熟区（根毛区）</span>四部分组成，是根吸收水分、无机盐和生长的关键部位。",
+                explanation: "不同区域的细胞形态和功能不同，共同完成根的生长和吸收功能。"
+            },
+            {
+                id: 37,
+                lesson: "5",
+                question: "叶表皮的保卫细胞和气孔有什么作用？",
+                answer: "保卫细胞通常呈半月形，中间的缝隙即为<span class='emphasize'>气孔</span>。气孔帮助植物进行呼吸作用：白天开放保证光合作用所需二氧化碳供应，同时通过蒸腾作用促进水分和无机盐向上运输；夜晚或干旱时关闭以减少水分浪费。",
+                explanation: "气孔的开闭是植物调节水分蒸腾和气体交换的重要机制。"
+            },
+            {
+                id: 38,
+                lesson: "5",
+                question: "谁发现了血液红细胞？红细胞的主要功能是什么？",
+                answer: "<span class='emphasize'>简·施旺麦丹</span>发现了血液红细胞。红细胞的主要成分是血红蛋白，专门负责运输<span class='emphasize'>氧气和二氧化碳</span>。",
+                explanation: "红细胞是血液中数量最多的血细胞，在气体运输中起关键作用。"
+            },
+            {
+                id: 39,
+                lesson: "5",
+                question: "比较动物细胞和植物细胞的异同。",
+                answer: "<div class='table-container'><table class='comparison-table'><tr><th>比较项目</th><th>动物细胞</th><th>植物细胞</th></tr><tr><td>相同点</td><td colspan='2'>都有细胞核、细胞质、细胞膜</td></tr><tr><td>不同点</td><td>没有细胞壁、液泡、叶绿体</td><td>有细胞壁、液泡、叶绿体（部分细胞）</td></tr></table></div>",
+                explanation: "植物细胞特有的结构使其具有固定形态、储存物质和进行光合作用的能力。"
+            },
+            {
+                id: 40,
+                lesson: "5",
+                question: "什么是单细胞生物？举例说明。",
+                answer: "只有一个细胞的生物称为<span class='emphasize'>单细胞生物</span>。例如：草履虫、眼虫、喇叭虫、变形虫、太阳虫、细菌等。",
+                explanation: "单细胞生物虽然只有一个细胞，却能完成全部生命活动，是完整的生命体。"
+            },
+            {
+                id: 41,
+                lesson: "5",
+                question: "不同生物的细胞形态结构是否相同？同一生物不同部位的细胞呢？",
+                answer: "<span class='emphasize'>不同生物的细胞形态结构是不一样的</span>，<span class='emphasize'>同一生物不同部位的细胞形态结构也是不一样的</span>。",
+                explanation: "细胞的形态结构与其功能相适应，不同功能需要不同的细胞结构。"
+            },
+            {
+                id: 42,
+                lesson: "5",
+                question: "我们的皮肤表面，每平方厘米含有多少细胞？",
+                answer: "我们的皮肤表面，每平方厘米含有的细胞数超过<span class='emphasize'>10万个</span>。",
+                explanation: "这说明了细胞的微小和数量之多，也解释了为什么我们需要显微镜才能观察细胞。"
+            },
+            
+            // 第6课：观察水中微小的微生物
+            {
+                id: 43,
+                lesson: "6",
+                question: "什么是微生物？",
+                answer: "一切肉眼看不见或看不清的微小生物，个体微小，结构简单，通常要用光学显微镜和电子显微镜才能看清的生物，统称为<span class='emphasize'>微生物</span>。",
+                explanation: "微生物包括细菌、病毒、真菌等，但有些微生物是肉眼可以看见的，如蘑菇、木耳、灵芝等。"
+            },
+            {
+                id: 44,
+                lesson: "6",
+                question: "谁首次在显微镜下发现微生物？",
+                answer: "<span class='emphasize'>荷兰的安东尼·范·列文虎克</span>是世界上首次在显微镜下发现微生物的人。",
+                explanation: "列文虎克用自制的显微镜观察水滴，发现了其中的微生物，被称为\"微生物学之父\"。"
+            },
+            {
+                id: 45,
+                lesson: "6",
+                question: "微生物有哪些生命特征？",
+                answer: "微生物也是由细胞组成（除病毒外），需要一定的生活环境，需要进食或自己进行光合作用制作食物，需要呼吸、排泄废物，对外界的刺激有应激表现，有生殖现象等。",
+                explanation: "这些特征说明微生物是完整的生命体，具有生命的基本特征。"
+            },
+            {
+                id: 46,
+                lesson: "6",
+                question: "池塘中可能有哪些微生物？",
+                answer: "池塘中的微生物可能有<span class='emphasize'>草履虫、水蚤、钟形虫、变形虫、线虫、新月藻、衣藻、鼓藻</span>等。",
+                explanation: "不同的微生物生活在不同的水域环境中，池塘是微生物的富集地。"
+            },
+            {
+                id: 47,
+                lesson: "6",
+                question: "如何培养微生物？",
+                answer: "取池塘水或鱼缸里的水，放在窗台上，利用<span class='emphasize'>干草培养微生物</span>（提供营养）。",
+                explanation: "干草为微生物生长提供有机物营养，促进微生物繁殖，便于观察。"
+            },
+            {
+                id: 48,
+                lesson: "6",
+                question: "制作微生物临时玻片的步骤是什么？",
+                answer: "步骤：<span class='emphasize'>滴→盖→吸</span>。①用滴管取少量水样滴在载玻片中央；②用镊子夹取盖玻片从水滴一侧轻轻盖到水滴上；③用吸水纸从盖玻片边缘吸走多余的水。",
+                explanation: "制作时要注意避免气泡，吸走多余水分可以减慢微生物运动，便于观察。"
+            },
+            {
+                id: 49,
+                lesson: "6",
+                question: "如何限制微生物的运动以便观察？",
+                answer: "①载玻片放少量<span class='emphasize'>脱脂棉纤维</span>（阻挡运动）；②用吸水纸吸走多余水分（减慢运动）。",
+                explanation: "微生物通常运动较快，限制其运动可以更清楚地观察其形态和结构。"
+            },
+            {
+                id: 50,
+                lesson: "6",
+                question: "草履虫有哪些特征？",
+                answer: "草履虫是单细胞动物，形状似<span class='emphasize'>倒放的草鞋</span>，体表有纤毛可运动，通过口沟取食细菌等，能对外界刺激作出反应，生活在淡水环境中。",
+                explanation: "草履虫是单细胞动物的典型代表，常用作生物学实验材料。"
+            },
+            {
+                id: 51,
+                lesson: "6",
+                question: "衣藻有哪些特征？",
+                answer: "衣藻是单细胞植物，有<span class='emphasize'>叶绿体</span>，可进行光合制造有机物，有两条鞭毛，生活在淡水或潮湿土壤中，属于自养生物。",
+                explanation: "衣藻具有植物和动物的双重特征：有叶绿体能光合作用，又有鞭毛能运动。"
+            },
+            {
+                id: 52,
+                lesson: "6",
+                question: "水蚤有什么特点？",
+                answer: "水蚤是多细胞动物，肉眼可看见，俗称\"鱼虫\"，生活在淡水池塘中，是<span class='emphasize'>鱼类的重要饵料</span>。",
+                explanation: "水蚤是水生食物链中的重要环节，连接着微生物和鱼类。"
+            },
+            
+            // 第7课：微生物与健康
+            {
+                id: 53,
+                lesson: "7",
+                question: "病毒有什么特点？",
+                answer: "病毒是一种微生物，种类很多，分布广泛，个体极其微小，绝大多数要在显微镜下才能看到。病毒的结构非常简单，<span class='emphasize'>没有细胞结构</span>，不能独立生存，必须生活在其他生物的细胞内。",
+                explanation: "病毒是介于生命和非生命之间的特殊存在，离开宿主细胞就不表现任何生命活动迹象。"
+            },
+            {
+                id: 54,
+                lesson: "7",
+                question: "谁第一个把微生物和疾病联系起来？他的主要贡献是什么？",
+                answer: "<span class='emphasize'>法国科学家路易斯·巴斯德</span>是第一个把微生物和疾病联系起来的人。他强调医生要使用消毒法，发明的<span class='emphasize'>巴氏消毒法</span>拯救了牛奶、葡萄酒两大产业。",
+                explanation: "巴斯德的贡献奠定了微生物学和医学的基础，他的消毒理论挽救了无数生命。"
+            },
+            {
+                id: 55,
+                lesson: "7",
+                question: "谁发明了青霉素？有什么意义？",
+                answer: "<span class='emphasize'>亚历山大·弗莱明</span>于1928年发明了青霉素，从而使千万人免于肺炎等疾病的侵染致死。",
+                explanation: "青霉素是人类发现的第一种抗生素，开启了抗生素治疗的时代，是医学史上的重大突破。"
+            },
+            {
+                id: 56,
+                lesson: "7",
+                question: "谁发明了世界上第一支疫苗？",
+                answer: "<span class='emphasize'>英国医生爱德华·琴纳</span>发现接种牛痘能让人获得对天花的免疫力，发明了世界上第一支疫苗。",
+                explanation: "琴纳的发现开启了免疫学研究的先河，疫苗的发明拯救了无数生命。"
+            },
+            {
+                id: 57,
+                lesson: "7",
+                question: "什么是疫苗？",
+                answer: "疫苗是指以死亡或减毒的病原体制成的生物制品，接种后能使人体产生免疫力，预防相应疾病。",
+                explanation: "疫苗利用免疫系统\"记忆\"病原体的特性，提前训练免疫系统识别和消灭病原体。"
+            },
+            {
+                id: 58,
+                lesson: "7",
+                question: "微生物在食品制作中有哪些应用？",
+                answer: "①直接食用：蘑菇、木耳等真菌；②间接食用：利用酵母菌发酵制作面包/馒头/酿酒、乳酸菌制作酸奶/泡菜、霉菌制作腐乳。",
+                explanation: "微生物在食品工业中广泛应用，丰富了人类的食物种类和风味。"
+            },
+            {
+                id: 59,
+                lesson: "7",
+                question: "如何防止食物霉变？",
+                answer: "保持环境<span class='emphasize'>干燥</span>，<span class='emphasize'>低温</span>可抑制微生物生长（防霉变）。",
+                explanation: "微生物生长需要适宜的温度和湿度，控制这些条件可以有效防止食物霉变。"
+            },
+            {
+                id: 60,
+                lesson: "7",
+                question: "微生物在环境保护中有什么作用？",
+                answer: "①污水处理：微生物可分解污水中的污染物，实现水质净化；②垃圾处理：微生物能分解有机垃圾，将其转化为有机肥料，实现有机垃圾的资源化利用。",
+                explanation: "微生物在生态系统中扮演分解者的角色，对物质循环和环境保护至关重要。"
+            },
+            {
+                id: 61,
+                lesson: "7",
+                question: "观察工具的改进经历了哪些阶段？",
+                answer: "肉眼→放大镜→光学显微镜→电子显微镜。放大镜发明前，人只能看到小昆虫；放大镜可看到器官和组织；光学显微镜可看到细胞和微生物；电子显微镜可看到病毒、原子等。",
+                explanation: "观察工具的进步推动了科学的发展，使我们能够探索越来越小的微观世界。"
+            },
+            {
+                id: 62,
+                lesson: "7",
+                question: "不同观察工具的放大倍数和观察对象是什么？",
+                answer: "<div class='table-container'><table class='comparison-table'><tr><th>观察工具</th><th>放大倍数</th><th>观察对象</th></tr><tr><td>肉眼</td><td>-</td><td>约0.1毫米以上的物体，小昆虫</td></tr><tr><td>放大镜</td><td>几倍到几十倍</td><td>生物的一些较小的器官和组织</td></tr><tr><td>光学显微镜</td><td>约2000倍</td><td>细胞、微生物与少数细菌</td></tr><tr><td>电子显微镜</td><td>几百万倍</td><td>细菌、病毒、物质的极小颗粒-原子</td></tr></table></div>",
+                explanation: "随着观察工具的发展，人类能够探索的微观世界越来越深入。"
+            }
+        ];
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            const cardContainer = document.getElementById('cardContainer');
+            const lessonButtons = document.querySelectorAll('.lesson-btn');
+            const displayButtons = document.querySelectorAll('.display-btn');
+            const totalCardsElement = document.getElementById('totalCards');
+            const visibleCardsElement = document.getElementById('visibleCards');
+            
+            // 初始化卡片
+            renderCards('all');
+            
+            // 设置总卡片数
+            totalCardsElement.textContent = knowledgeCards.length;
+            
+            // 添加单元筛选按钮事件监听
+            lessonButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    lessonButtons.forEach(btn => btn.classList.remove('active'));
+                    // 给当前点击的按钮添加active类
+                    this.classList.add('active');
+                    
+                    // 获取筛选条件
+                    const lesson = this.getAttribute('data-lesson');
+                    
+                    // 渲染筛选后的卡片
+                    renderCards(lesson);
+                });
+            });
+            
+            // 添加显示列数按钮事件监听
+            displayButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    displayButtons.forEach(btn => btn.classList.remove('active'));
+                    // 给当前点击的按钮添加active类
+                    this.classList.add('active');
+                    
+                    // 获取列数
+                    const columns = this.getAttribute('data-columns');
+                    
+                    // 更新卡片容器类
+                    cardContainer.className = 'card-container columns-' + columns;
+                    
+                    // 重新渲染卡片以应用新的样式
+                    const activeLessonBtn = document.querySelector('.lesson-btn.active');
+                    const currentLesson = activeLessonBtn.getAttribute('data-lesson');
+                    renderCards(currentLesson);
+                });
+            });
+            
+            // 渲染卡片函数
+            function renderCards(lessonFilter) {
+                // 清空容器
+                cardContainer.innerHTML = '';
+                
+                // 筛选卡片
+                let filteredCards = knowledgeCards;
+                if (lessonFilter !== 'all') {
+                    filteredCards = knowledgeCards.filter(card => card.lesson === lessonFilter);
+                }
+                
+                // 更新可见卡片数
+                visibleCardsElement.textContent = filteredCards.length;
+                
+                // 创建卡片元素
+                filteredCards.forEach(card => {
+                    const cardElement = document.createElement('div');
+                    cardElement.className = 'card';
+                    cardElement.setAttribute('data-lesson', card.lesson);
+                    
+                    cardElement.innerHTML = `
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-lesson">${getLessonName(card.lesson)}</div>
+                                <div class="card-content">
+                                    <div class="card-question">${card.question}</div>
+                                    <div class="card-hint">点击卡片查看答案和详细解释</div>
+                                </div>
+                                <div class="flip-icon">↻ 点击翻转查看答案</div>
+                            </div>
+                            <div class="card-back">
+                                <div class="card-lesson">答案</div>
+                                <div class="card-content">
+                                    <div class="card-answer">${card.answer}</div>
+                                    <div class="card-explanation">${card.explanation}</div>
+                                </div>
+                                <div class="flip-icon">↻ 点击返回问题</div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // 添加点击事件
+                    cardElement.addEventListener('click', function() {
+                        this.classList.toggle('flipped');
+                    });
+                    
+                    cardContainer.appendChild(cardElement);
+                });
+            }
+            
+            // 获取课时名称
+            function getLessonName(lessonCode) {
+                const lessonNames = {
+                    "1": "第1课",
+                    "2": "第2课",
+                    "3": "第3课",
+                    "4": "第4课",
+                    "5": "第5课",
+                    "6": "第6课",
+                    "7": "第7课"
+                };
+                return lessonNames[lessonCode] || "全部课时";
+            }
+        });
+    </script>
+</body>
+</html>
